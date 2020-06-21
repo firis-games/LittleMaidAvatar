@@ -2,6 +2,7 @@ package firis.lmavatar.client.event;
 
 import org.lwjgl.input.Keyboard;
 
+import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
@@ -28,9 +29,9 @@ public class KeyBindingHandler {
 	 * Avatarアクション用
 	 * defalut:＠キー
 	 */
-	public static final KeyBinding keyLittleMaidAvatarAction = new KeyBinding("key.lmavatar.action", Keyboard.KEY_GRAVE, "advancements.root");
+	public static final KeyBinding keyLittleMaidAvatarAction = new KeyBinding("key.lmavatar.action", Keyboard.KEY_GRAVE, LittleMaidAvatar.NAME);
 	
-	public static final KeyBinding keyLittleMaidAvatarChange = new KeyBinding("key.lmavatar.change", Keyboard.KEY_SEMICOLON, "advancements.root");
+	public static final KeyBinding keyLittleMaidAvatarChange = new KeyBinding("key.lmavatar.change", Keyboard.KEY_SEMICOLON, LittleMaidAvatar.NAME);
 	
 	/**
 	 * キーバインド初期化
