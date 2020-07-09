@@ -12,4 +12,8 @@ public interface IProxy {
 	default public EntityPlayer getClientPlayer() {
 		return null;
 	}
+	
+	default public void openGuiTextureSelect() {
+		
+	}
 }

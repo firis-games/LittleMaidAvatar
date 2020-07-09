@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IGuiTextureSelect;
 import firis.lmlib.api.caps.IModelCapsEntity;
 import firis.lmlib.api.caps.ModelCompoundEntityBase;
 import firis.lmlib.api.resource.LMTextureBox;
@@ -12,6 +13,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Property;
 
 /**
  * PlayerAvatar用パラメータクラス
@@ -20,7 +22,7 @@ import net.minecraft.util.ResourceLocation;
  * モーションなどの表示フラグもここで管理する
  *
  */
-public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPlayer> {
+public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPlayer> implements IGuiTextureSelect {
 	
 	/**
 	 * LMAvatarが有効化どうかの判断
@@ -267,4 +269,59 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		ItemStack stack = this.owner.inventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getLightTextureOuterArmor(stack);
 	}
+
+	@Override
+	public String getGuiTargetLittleMaidName() {
+		return this.getTextureBoxLittleMaid().getTextureModelName();
+	}
+
+	@Override
+	public String getGuiTargetArmorName(EntityEquipmentSlot slot) {
+		return this.getTextureBoxArmor(slot).getTextureModelName();
+	}
+
+	@Override
+	public int getGuiTargetColor() {
+		return this.color;
+	}
+
+	@Override
+	public boolean getGuiTargetContract() {
+		return true;
+	}
+
+	@Override
+	public void syncSelectTextureLittleMaid(String textureName, int color) {
+		
+		//Config操作用
+		Property propModel = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "01.MaidModel", FirisConfig.cfg_maid_model);
+		Property propModelColor = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "02.MaidColorNo", FirisConfig.cfg_maid_color);
+		
+		//メイドモデルの指定
+		propModel.set(textureName);
+		propModelColor.set(color);
+		
+		FirisConfig.syncConfig();
+		
+	}
+
+	@Override
+	public void syncSelectTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
+		//Config操作用
+		Property propModelArmorHelmet = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "03.ArmorHelmetModel", FirisConfig.cfg_armor_model_head);
+		Property propModelArmorChest = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "04.ArmorChestplateModel", FirisConfig.cfg_armor_model_body);
+		Property propModelArmorLegg = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "05.ArmorLeggingsModel", FirisConfig.cfg_armor_model_leg);
+		Property propModelArmorBoots = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "06.ArmorBootsModel", FirisConfig.cfg_armor_model_boots);
+		
+		//全部のモデルを反映
+		propModelArmorHelmet.set(headTextureName);
+		propModelArmorChest.set(chestTextureName);
+		propModelArmorLegg.set(legsTextureName);
+		propModelArmorBoots.set(feetTextureName);
+		
+		FirisConfig.syncConfig();
+		
+	}
+
+	
 }
