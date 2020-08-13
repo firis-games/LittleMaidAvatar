@@ -73,11 +73,12 @@ public class LittleMaidAvatarClientTickEventHandler {
 				//同期処理
 				SyncPlayerModelClient.syncModel();
 			}
-			
-			if (!isMotionWaitReset && !isMotionSittingReset) {
-				//モーション継続と設定の判断
-				lmAvatar.setLMAvatarWaitAction(true);
-			}
+		}
+		
+		//待機モーション判定
+		if (!isMotionWaitReset && !isMotionSittingReset) {
+			//モーション継続と設定の判断
+			lmAvatar.setLMAvatarWaitAction(true);
 		}
 	}
 	
