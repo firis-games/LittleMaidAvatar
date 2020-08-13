@@ -20,6 +20,9 @@ public class FirisConfig {
 	/** LittleMaidAvatarに登録するLayer設定 */
 	public static List<String> cfg_lmavatar_include_layer = null;
 	
+	/** 初回ログイン時のアイテム追加機能設定 */
+	public static boolean cfg_lmavatar_first_login_add_inventory_item = true;
+	
 	/**
 	 * メイドさんモデル
 	 */
@@ -80,6 +83,9 @@ public class FirisConfig {
 		cfg_lmavatar_include_layer = Arrays.asList(config.getStringList("LittleMaidAvatar.IncludeLayer", CATEGORY_GENERAL, lma_include_layer, 
 				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
 		
+		//初回ログイン時にインヴェントリにアイテム追加
+		cfg_lmavatar_first_login_add_inventory_item = config.getBoolean("LittleMaidAvatar.FirstLoginAddInventoryItem", CATEGORY_GENERAL, true, 
+				"初回ログイン時にプレイヤーインベントリへアイテムを追加します。");
 		
 		//--------------------------------------------------
 		
