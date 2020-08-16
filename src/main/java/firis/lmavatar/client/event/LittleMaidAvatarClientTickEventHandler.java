@@ -38,6 +38,9 @@ public class LittleMaidAvatarClientTickEventHandler {
 		
 		PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
 		
+		boolean lmAvatarAction = lmAvatar.isLMAvatarAction();
+		boolean lmAvatarWaitAction = lmAvatar.getLMAvatarWaitAction();
+		
 		//アクション解除
 		//腕振り
 		if (!isMotionWaitReset && player.swingProgress != 0.0F) {
@@ -52,34 +55,39 @@ public class LittleMaidAvatarClientTickEventHandler {
 	        }
 		}
 		
-		//アクション解除
-		//縦方向は重力が発生してるので微調整して判断
-		if (lmAvatar.isLMAvatarAction() || lmAvatar.getLMAvatarWaitAction()) {
-			if (!isMotionWaitReset || !isMotionSittingReset) {
-				if (player.motionX != 0.0D || player.motionZ != 0.0D
-						|| player.motionY > 0.0D) {
-					isMotionWaitReset = true;
-					isMotionSittingReset = true;
-				}
-			}
-			
-			if (isMotionWaitReset) {
-				//待機モーションリセット
-				lmAvatar.resetLMAvatarWaitAction();
-			}
-			if (isMotionSittingReset) {
-				//お座りモーションリセット
-				lmAvatar.resetLMAvatarAction();
-				//同期処理
-				SyncPlayerModelClient.syncModel();
-			}
+		//移動時のアクションリセット
+		if (player.motionX != 0.0D || player.motionZ != 0.0D
+				|| player.motionY > 0.0D) {
+			isMotionWaitReset = true;
+			isMotionSittingReset = true;
 		}
 		
 		//待機モーション判定
 		if (!isMotionWaitReset && !isMotionSittingReset) {
 			//モーション継続と設定の判断
 			lmAvatar.setLMAvatarWaitAction(true);
+		} else {
+			//待機モーションリセット
+			lmAvatar.resetLMAvatarWaitAction();
 		}
+		
+		//各種アクションの設定
+		if (isMotionWaitReset) {
+			//待機モーションリセット
+			lmAvatar.resetLMAvatarWaitAction();
+		}
+		if (isMotionSittingReset) {
+			//お座りモーションリセット
+			lmAvatar.resetLMAvatarAction();
+		}
+		
+		//同期判定
+		if (lmAvatarAction != lmAvatar.isLMAvatarAction()
+				|| lmAvatarWaitAction != lmAvatar.getLMAvatarWaitAction()) {
+			//同期処理
+			SyncPlayerModelClient.syncModel();
+		}
+		
 	}
 	
 }
