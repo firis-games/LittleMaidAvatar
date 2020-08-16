@@ -45,9 +45,9 @@ public class KeyBindingHandler {
 	public static final KeyBinding keyLittleMaidAvatarAction4 = new KeyBinding("key.lmavatar.action4", Keyboard.KEY_NUMPAD4, LittleMaidAvatar.NAME);
 	public static final KeyBinding keyLittleMaidAvatarAction5 = new KeyBinding("key.lmavatar.action5", Keyboard.KEY_NUMPAD5, LittleMaidAvatar.NAME);
 	public static final KeyBinding keyLittleMaidAvatarAction6 = new KeyBinding("key.lmavatar.action6", Keyboard.KEY_NUMPAD6, LittleMaidAvatar.NAME);
-	public static final KeyBinding keyLittleMaidAvatarAction7 = new KeyBinding("key.lmavatar.action7", Keyboard.KEY_NUMPAD7, LittleMaidAvatar.NAME);
-	public static final KeyBinding keyLittleMaidAvatarAction8 = new KeyBinding("key.lmavatar.action8", Keyboard.KEY_NUMPAD8, LittleMaidAvatar.NAME);
-	public static final KeyBinding keyLittleMaidAvatarAction9 = new KeyBinding("key.lmavatar.action9", Keyboard.KEY_NUMPAD9, LittleMaidAvatar.NAME);
+	//public static final KeyBinding keyLittleMaidAvatarAction7 = new KeyBinding("key.lmavatar.action7", Keyboard.KEY_NUMPAD7, LittleMaidAvatar.NAME);
+	//public static final KeyBinding keyLittleMaidAvatarAction8 = new KeyBinding("key.lmavatar.action8", Keyboard.KEY_NUMPAD8, LittleMaidAvatar.NAME);
+	//public static final KeyBinding keyLittleMaidAvatarAction9 = new KeyBinding("key.lmavatar.action9", Keyboard.KEY_NUMPAD9, LittleMaidAvatar.NAME);
 	
 	/**
 	 * 各種モーション割り当て用
@@ -67,9 +67,9 @@ public class KeyBindingHandler {
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction4);
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction5);
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction6);
-		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction7);
-		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction8);
-		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction9);
+		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction7);
+		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction8);
+		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction9);
 		
 		//キーリスト
 		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction1, 1);
@@ -78,9 +78,9 @@ public class KeyBindingHandler {
 		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction4, 4);
 		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction5, 5);
 		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction6, 6);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, 7);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, 8);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, 9);
+		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, 7);
+		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, 8);
+		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, 9);
 		
 	}
 	
