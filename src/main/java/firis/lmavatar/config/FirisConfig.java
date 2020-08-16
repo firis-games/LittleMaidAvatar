@@ -23,6 +23,12 @@ public class FirisConfig {
 	/** 初回ログイン時のアイテム追加機能設定 */
 	public static boolean cfg_lmavatar_first_login_add_inventory_item = true;
 	
+	/** LMアバターのサイズをマルチモデルにアジャストする */
+	public static boolean cfg_lmavatar_adjust_size = true;
+	
+	/** LMアバターのサイズをアジャストする際のサイズ倍率を指定する */
+	public static float cfg_lmavatar_adjust_size_scale = 1.0F;
+	
 	/**
 	 * メイドさんモデル
 	 */
@@ -86,6 +92,14 @@ public class FirisConfig {
 		//初回ログイン時にインヴェントリにアイテム追加
 		cfg_lmavatar_first_login_add_inventory_item = config.getBoolean("LittleMaidAvatar.FirstLoginAddInventoryItem", CATEGORY_GENERAL, true, 
 				"初回ログイン時にプレイヤーインベントリへアイテムを追加します。");
+		
+		//プレイヤーモデルの当たり判定調整
+		cfg_lmavatar_adjust_size = config.getBoolean("LittleMaidAvatar.AdjustSize", CATEGORY_GENERAL, true, 
+				"LMアバター適応時にプレイヤーのサイズをマルチモデルのサイズに調整します。");
+		
+		//cfg_lmavatar_adjust_sizeが有効な際の倍率設定
+		cfg_lmavatar_adjust_size_scale = config.getFloat("LittleMaidAvatar.AdjustSizeScale", CATEGORY_GENERAL, 1.0F, 0.1F, 2.0F, 
+				"マルチモデルのサイズに調整機能が有効な場合にプレイヤーサイズの全体倍率を指定します。");
 		
 		//--------------------------------------------------
 		

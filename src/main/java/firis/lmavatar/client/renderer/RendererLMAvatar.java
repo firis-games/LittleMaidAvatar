@@ -152,6 +152,12 @@ public class RendererLMAvatar extends RenderPlayer {
 		if (lscale != null) {
 			GL11.glScalef(lscale, lscale, lscale);
 		}
+		
+		PlayerModelConfigCompound playerModel = PlayerModelManager.getModelConfigCompound(entitylivingbaseIn);
+		lscale = playerModel.getPlayerScale();
+		if (lscale != 1.0F) {
+			GL11.glScalef(lscale, lscale, lscale);
+		}
     }
 	
 	/**
@@ -160,12 +166,14 @@ public class RendererLMAvatar extends RenderPlayer {
 	@Override
 	public void doRender(AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {
 	
+		//影のサイズを初期化
+		this.shadowSize = 0.5F;
+		
 		//通常スキン
 		if (!isRenderLMAvatar(entity)) {
 			this.renderPlayer.doRender(entity, x, y, z, entityYaw, partialTicks);
 			return;
 		}
-		
 		
 		//パラメータの初期化
 		this.setModelValues(entity, x, y, z, entityYaw, partialTicks);
@@ -243,6 +251,9 @@ public class RendererLMAvatar extends RenderPlayer {
 		//モデルパラメータ取得
 		PlayerModelConfigCompound modelConfigCompound = PlayerModelManager.getModelConfigCompound(entity);
 		
+		//影のサイズ変更
+		this.shadowSize = this.shadowSize * modelConfigCompound.getPlayerScale();
+
 		//パラメータの初期化
 		this.getLittleMaidMultiModel().initModelParameter(modelConfigCompound, entityYaw, partialTicks);
 		

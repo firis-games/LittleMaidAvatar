@@ -9,6 +9,7 @@ import firis.lmlib.api.caps.IModelCapsEntity;
 import firis.lmlib.api.caps.ModelCompoundEntityBase;
 import firis.lmlib.api.motion.LMMotionSitdown;
 import firis.lmlib.api.resource.LMTextureBox;
+import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -350,6 +351,45 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		FirisConfig.syncConfig();
 		
 	}
-
+	
+	/**
+	 * プレイヤーの幅
+	 * @return
+	 */
+	public float getPlayerWidth() {
+		ModelMultiBase mmb = getModelLittleMaid();
+		if (mmb != null) {
+			return Math.min(mmb.getWidth(getModelCaps()) * getPlayerScale(), 0.6F);
+		}
+		return 0.5F * getPlayerScale();
+	}
+	
+	/**
+	 * プレイヤーの高さ
+	 * @return
+	 */
+	public float getPlayerHeight() {
+		ModelMultiBase mmb = getModelLittleMaid();
+		if (mmb != null) {
+			return mmb.getHeight(getModelCaps()) * getPlayerScale();
+		}
+		return 1.35F * getPlayerScale();
+	}
+	
+	/**
+	 * プレイヤーの目線
+	 * @return
+	 */
+	public float getPlayerEyeHeight() {
+		return getPlayerHeight() * 0.85F;
+	}
+	
+	/**
+	 * プレイヤースケール取得
+	 * @return
+	 */
+	public float getPlayerScale() {
+		return FirisConfig.cfg_lmavatar_adjust_size ? FirisConfig.cfg_lmavatar_adjust_size_scale : 1.0F;
+	}
 	
 }
