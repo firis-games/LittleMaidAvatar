@@ -54,7 +54,7 @@ public class LittleMaidAvatarClientTickEventHandler {
 		
 		//アクション解除
 		//縦方向は重力が発生してるので微調整して判断
-		if (lmAvatar.getLMAvatarAction() || lmAvatar.getLMAvatarWaitAction()) {
+		if (lmAvatar.isLMAvatarAction() || lmAvatar.getLMAvatarWaitAction()) {
 			if (!isMotionWaitReset || !isMotionSittingReset) {
 				if (player.motionX != 0.0D || player.motionZ != 0.0D
 						|| player.motionY > 0.0D) {

@@ -9,3 +9,14 @@ commands.lmacommand.save.update=「%s」を保存しました
 commands.lmacommand.load=「%s」が読み込まれました
 commands.lmacommand.load.error=「%s」は登録されていません
 commands.lmacommand.list.error=「%s」は登録されていません
+
+key.lmavatar.action1=アバターアクション1
+key.lmavatar.action2=アバターアクション2
+key.lmavatar.action3=アバターアクション3
+key.lmavatar.action4=アバターアクション4
+key.lmavatar.action5=アバターアクション5
+key.lmavatar.action6=アバターアクション6
+key.lmavatar.action7=アバターアクション7
+key.lmavatar.action8=アバターアクション8
+key.lmavatar.action9=アバターアクション9
+

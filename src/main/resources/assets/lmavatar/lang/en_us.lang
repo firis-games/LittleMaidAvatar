@@ -10,3 +10,13 @@ commands.lmacommand.load=load %s
 commands.lmacommand.load.error=non exists %s
 commands.lmacommand.list.error=non exists %s
 
+key.lmavatar.action1=Action1
+key.lmavatar.action2=Action2
+key.lmavatar.action3=Action3
+key.lmavatar.action4=Action4
+key.lmavatar.action5=Action5
+key.lmavatar.action6=Action6
+key.lmavatar.action7=Action7
+key.lmavatar.action8=Action8
+key.lmavatar.action9=Action9
+

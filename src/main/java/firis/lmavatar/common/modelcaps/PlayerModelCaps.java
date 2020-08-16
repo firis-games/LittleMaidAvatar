@@ -4,7 +4,6 @@ import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
-import firis.lmmm.api.model.motion.LMMotionSitdown;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -35,12 +34,13 @@ public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 		case caps_isRiding:
 			if (this.isFirstPersonView()) return false;
 			//疑似お座りモーションを管理する
-			return owner.isRiding() || PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
+			return owner.isRiding() || PlayerModelManager.getModelConfigCompound(owner).isLMAvatarActionSitdown();
+			
 		//お座りモーション制御用
 		case caps_multimodel_motion:
 			//疑似お座りモーション
-			boolean isSitdown = PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
-			return isSitdown ? LMMotionSitdown.SITDOWN : null;
+			return PlayerModelManager.getModelConfigCompound(owner).getLMMotionId();
+			
 		case caps_isSneak:
 			if (this.isFirstPersonView()) return false;
 			return owner.isSneaking();

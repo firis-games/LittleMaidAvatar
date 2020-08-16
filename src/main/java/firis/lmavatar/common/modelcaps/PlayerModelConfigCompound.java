@@ -7,6 +7,7 @@ import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IGuiTextureSelect;
 import firis.lmlib.api.caps.IModelCapsEntity;
 import firis.lmlib.api.caps.ModelCompoundEntityBase;
+import firis.lmlib.api.motion.LMMotionSitdown;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -41,8 +42,11 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	
 	/**
 	 *　LMアバターアクション
+	 *
+	 * 0:アクションなし
+	 * 1～:モーション割り当て
 	 */
-	private boolean lmAvatarAction = false;
+	private Integer lmAvatarAction = 0;
 	
 	/**
 	 * Player
@@ -65,8 +69,32 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	 * アクション状態を取得する
 	 * @return
 	 */
-	public boolean getLMAvatarAction() {
+	public Integer getLMAvatarActionId() {
 		return this.lmAvatarAction;
+	}
+	
+	/**
+	 * お座りモーション判定
+	 * @return
+	 */
+	public boolean isLMAvatarActionSitdown() {
+		return LMMotionSitdown.MOTION_ID.equals(LMLibraryAPI.instance().getLMMotionId(this.lmAvatarAction));
+	}
+	
+	/**
+	 * アクション中の判断
+	 * @return
+	 */
+	public boolean isLMAvatarAction() {
+		return this.lmAvatarAction != 0;
+	}
+	
+	/**
+	 * モーションIDを取得する
+	 * @return
+	 */
+	public String getLMMotionId() {
+		return LMLibraryAPI.instance().getLMMotionId(this.lmAvatarAction);
 	}
 	
 	/**
@@ -79,7 +107,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	/**
 	 * LMアバターのアクションを設定する
 	 */
-	public void setLMAvatarAction(boolean isAction) {
+	public void setLMAvatarAction(Integer isAction) {
 		this.lmAvatarAction = isAction;
 	}
 	
@@ -105,7 +133,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	 * LMアバターのアクションをリセットする
 	 */
 	public void resetLMAvatarAction() {
-		this.lmAvatarAction = false;
+		this.lmAvatarAction = 0;
 	}
 	
 	/**
@@ -154,7 +182,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		nbt.setString("feet", armorFeet);
 		
 		//モーション系
-		nbt.setBoolean("action", this.lmAvatarAction);
+		nbt.setInteger("action", this.lmAvatarAction);
 
 		return nbt;
 	}
@@ -181,7 +209,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		this.setColor(color);
 		
 		//モーション系
-		this.lmAvatarAction = nbt.getBoolean("action");
+		this.lmAvatarAction = nbt.getInteger("action");
 		
 	}
 	
