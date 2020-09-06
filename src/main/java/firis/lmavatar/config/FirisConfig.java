@@ -94,7 +94,7 @@ public class FirisConfig {
 				"初回ログイン時にプレイヤーインベントリへアイテムを追加します。");
 		
 		//プレイヤーモデルの当たり判定調整
-		cfg_lmavatar_adjust_size = config.getBoolean("LittleMaidAvatar.AdjustSize", CATEGORY_GENERAL, true, 
+		cfg_lmavatar_adjust_size = config.getBoolean("LittleMaidAvatar.AdjustSize", CATEGORY_GENERAL, false, 
 				"LMアバター適応時にプレイヤーのサイズをマルチモデルのサイズに調整します。");
 		
 		//cfg_lmavatar_adjust_sizeが有効な際の倍率設定
