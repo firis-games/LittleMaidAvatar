@@ -13,11 +13,13 @@ import firis.lmavatar.common.item.LMItemPlayerMaidBook;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.manager.SyncPlayerModelServer;
+import firis.lmavatar.common.modelmotion.LMMotionCarryOn;
 import firis.lmavatar.common.network.NetworkHandler;
 import firis.lmavatar.common.proxy.IProxy;
 import firis.lmavatar.config.ConfigChangedEventHandler;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmavatar.config.json.JConfigLMAvatarManager;
+import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -106,6 +108,9 @@ public class LittleMaidAvatar {
     	if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
     		registerClient();
     	}
+    	
+		//追加モーション設定
+		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
     }
     
     @EventHandler
