@@ -38,7 +38,8 @@ public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 			
 		//お座りモーション制御用
 		case caps_multimodel_motion:
-			//疑似お座りモーション
+			if (owner.isRiding()) return null;
+			//モーションID
 			return PlayerModelManager.getModelConfigCompound(owner).getLMMotionId();
 			
 		case caps_isSneak:
