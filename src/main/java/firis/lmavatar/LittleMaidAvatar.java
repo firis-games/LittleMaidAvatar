@@ -1,5 +1,7 @@
 package firis.lmavatar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -96,21 +98,36 @@ public class LittleMaidAvatar {
         MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
         MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
         
-        
         NetworkHandler.preInit();
+        
+		//追加モーション設定
+		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
     	
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
     	
+    	//設定を初期化
+    	if (FirisConfig.cfg_motion_key_reset) {
+	    	//1-9キー
+	    	List<String> motionList = new ArrayList<>();
+	    	for (int i = 1; i <= 9; i++) {
+	    		String motionId = LMLibraryAPI.instance().getLMMotionId(i);
+	    		if (motionId == null) {
+	    			break;
+	    		}
+	    		motionList.add(motionId);
+	    	}
+	    	FirisConfig.resetMotionKey(motionList);
+    	}
+    	//設定へ反映
+    	
     	//Renderer差し替え
     	if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
     		registerClient();
     	}
     	
-		//追加モーション設定
-		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
     }
     
     @EventHandler

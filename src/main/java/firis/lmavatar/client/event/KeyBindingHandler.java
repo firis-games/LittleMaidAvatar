@@ -10,6 +10,7 @@ import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
 import firis.lmavatar.config.FirisConfig;
+import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,14 +46,14 @@ public class KeyBindingHandler {
 	public static final KeyBinding keyLittleMaidAvatarAction4 = new KeyBinding("key.lmavatar.action4", Keyboard.KEY_NUMPAD4, LittleMaidAvatar.NAME);
 	public static final KeyBinding keyLittleMaidAvatarAction5 = new KeyBinding("key.lmavatar.action5", Keyboard.KEY_NUMPAD5, LittleMaidAvatar.NAME);
 	public static final KeyBinding keyLittleMaidAvatarAction6 = new KeyBinding("key.lmavatar.action6", Keyboard.KEY_NUMPAD6, LittleMaidAvatar.NAME);
-	//public static final KeyBinding keyLittleMaidAvatarAction7 = new KeyBinding("key.lmavatar.action7", Keyboard.KEY_NUMPAD7, LittleMaidAvatar.NAME);
-	//public static final KeyBinding keyLittleMaidAvatarAction8 = new KeyBinding("key.lmavatar.action8", Keyboard.KEY_NUMPAD8, LittleMaidAvatar.NAME);
-	//public static final KeyBinding keyLittleMaidAvatarAction9 = new KeyBinding("key.lmavatar.action9", Keyboard.KEY_NUMPAD9, LittleMaidAvatar.NAME);
+	public static final KeyBinding keyLittleMaidAvatarAction7 = new KeyBinding("key.lmavatar.action7", Keyboard.KEY_NUMPAD7, LittleMaidAvatar.NAME);
+	public static final KeyBinding keyLittleMaidAvatarAction8 = new KeyBinding("key.lmavatar.action8", Keyboard.KEY_NUMPAD8, LittleMaidAvatar.NAME);
+	public static final KeyBinding keyLittleMaidAvatarAction9 = new KeyBinding("key.lmavatar.action9", Keyboard.KEY_NUMPAD9, LittleMaidAvatar.NAME);
 	
 	/**
 	 * 各種モーション割り当て用
 	 */
-	protected static Map<KeyBinding, Integer> keyLittleMaidAvatarActionList = new HashMap<>();
+	protected static Map<KeyBinding, String> keyLittleMaidAvatarActionList = new HashMap<>();
 	
 	/**
 	 * キーバインド初期化
@@ -67,20 +68,20 @@ public class KeyBindingHandler {
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction4);
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction5);
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction6);
-		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction7);
-		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction8);
-		//ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction9);
+		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction7);
+		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction8);
+		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction9);
 		
 		//キーリスト
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction1, 1);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction2, 2);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction3, 3);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction4, 4);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction5, 5);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction6, 6);
-		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, 7);
-		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, 8);
-		//keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, 9);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction1, FirisConfig.cfg_motion_key1);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction2, FirisConfig.cfg_motion_key2);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction3, FirisConfig.cfg_motion_key3);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction4, FirisConfig.cfg_motion_key4);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction5, FirisConfig.cfg_motion_key5);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction6, FirisConfig.cfg_motion_key6);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, FirisConfig.cfg_motion_key7);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, FirisConfig.cfg_motion_key8);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, FirisConfig.cfg_motion_key9);
 		
 	}
 	
@@ -113,7 +114,7 @@ public class KeyBindingHandler {
 				//アクションの制御はすべてClient側で行う
 				EntityPlayer player = Minecraft.getMinecraft().player;
 				PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
-				lmAvatar.setLMAvatarAction(keyLittleMaidAvatarActionList.get(keyAction));
+				lmAvatar.setLMAvatarAction(LMLibraryAPI.instance().getLMMotionIndex(keyLittleMaidAvatarActionList.get(keyAction)));
 				
 				//同期する
 				SyncPlayerModelClient.syncModel();

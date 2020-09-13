@@ -7,6 +7,7 @@ import java.util.List;
 import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 public class FirisConfig {
 
@@ -14,6 +15,7 @@ public class FirisConfig {
 	
 	public static String CATEGORY_GENERAL = "General";
 	public static String CATEGORY_AVATAR = "PlayerMaidAvatar";
+	public static String CATEGORY_MOTION_KEY = "MotionKey";
 	
 	public static String DEFAULT_MAID_MODEL = "default_Orign";
 	
@@ -52,6 +54,18 @@ public class FirisConfig {
 	 */
 	public static boolean cfg_enable_lmavatar = true;
 	
+	//モーションキー設定
+	public static boolean cfg_motion_key_reset = true;
+	public static String cfg_motion_key1 = "";
+	public static String cfg_motion_key2 = "";
+	public static String cfg_motion_key3 = "";
+	public static String cfg_motion_key4 = "";
+	public static String cfg_motion_key5 = "";
+	public static String cfg_motion_key6 = "";
+	public static String cfg_motion_key7 = "";
+	public static String cfg_motion_key8 = "";
+	public static String cfg_motion_key9 = "";
+	
 	public static void init(File configDir) {
 		
 		File configFile = new File(configDir, "LittleMaidAvatar.cfg");
@@ -74,6 +88,8 @@ public class FirisConfig {
 		config.addCustomCategoryComment(CATEGORY_GENERAL, "メイドさんの姿になる機能");
 		
 		config.addCustomCategoryComment(CATEGORY_AVATAR, "マルチモデルの設定");
+		
+		config.addCustomCategoryComment(CATEGORY_MOTION_KEY, "モーションキーの設定");
 		
 	}
 	
@@ -135,6 +151,39 @@ public class FirisConfig {
 				true, 
 				"LMアバターの反映");
 		
+		//--------------------------------------------------
+		//MotionKey
+		cfg_motion_key_reset = config.getBoolean("MotionKeyReset", CATEGORY_MOTION_KEY,
+				true, 
+				"モーションキー設定をリセットします。");
+		cfg_motion_key1 = config.getString("MotionKey_1", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー1");
+		cfg_motion_key2 = config.getString("MotionKey_2", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー2");
+		cfg_motion_key3 = config.getString("MotionKey_3", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー3");
+		cfg_motion_key4 = config.getString("MotionKey_4", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー4");
+		cfg_motion_key5 = config.getString("MotionKey_5", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー5");
+		cfg_motion_key6 = config.getString("MotionKey_6", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー6");
+		cfg_motion_key7 = config.getString("MotionKey_7", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー7");
+		cfg_motion_key8 = config.getString("MotionKey_8", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー8");
+		cfg_motion_key9 = config.getString("MotionKey_9", CATEGORY_MOTION_KEY,
+				"", 
+				"モーションキー9");
+		
 		config.save();
 		
 		//LMAvatarの反映
@@ -149,6 +198,73 @@ public class FirisConfig {
 	 */
 	public static void syncConfig() {
 		syncConfig(true);
+	}
+	
+	/**
+	 * 
+	 * @param motionList
+	 */
+	public static void resetMotionKey(List<String> motionList) {
+		
+		//9個になるように追加
+		for (int i = motionList.size() + 1; i <= 9; i++) {
+			motionList.add("");
+		}
+		
+		//key1
+		Property propReset = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKeyReset", 
+				FirisConfig.cfg_motion_key_reset);
+		propReset.set(false);
+		
+		//key1
+		Property propKey1 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_1", 
+				FirisConfig.cfg_motion_key1);
+		propKey1.set(motionList.get(0));
+		//key2
+		Property propKey2 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_2", 
+				FirisConfig.cfg_motion_key2);
+		propKey2.set(motionList.get(1));
+		//key3
+		Property propKey3 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_3", 
+				FirisConfig.cfg_motion_key3);
+		propKey3.set(motionList.get(2));
+		//key4
+		Property propKey4 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_4", 
+				FirisConfig.cfg_motion_key4);
+		propKey4.set(motionList.get(3));
+		//key5
+		Property propKey5 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_5", 
+				FirisConfig.cfg_motion_key5);
+		propKey5.set(motionList.get(4));		
+		//key6
+		Property propKey6 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_6", 
+				FirisConfig.cfg_motion_key6);
+		propKey6.set(motionList.get(5));
+		//key7
+		Property propKey7 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_7", 
+				FirisConfig.cfg_motion_key7);
+		propKey7.set(motionList.get(6));
+		//key8
+		Property propKey8 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_8", 
+				FirisConfig.cfg_motion_key8);
+		propKey8.set(motionList.get(7));
+		//key9
+		Property propKey9 = FirisConfig.config.get(FirisConfig.CATEGORY_MOTION_KEY, 
+				"MotionKey_9", 
+				FirisConfig.cfg_motion_key9);
+		propKey9.set(motionList.get(8));
+		
+		syncConfig(false);
+		
 	}
 
 }
