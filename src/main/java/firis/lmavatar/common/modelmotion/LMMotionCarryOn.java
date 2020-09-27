@@ -25,9 +25,12 @@ public class LMMotionCarryOn implements ILMMotion {
 			//アイテム運びモード
 			model.bipedRightArm.setRotateAngle(-1.0F, -0.2F, 0.0F);
 			model.bipedLeftArm.setRotateAngle(-1.0F, 0.2F, 0.0F);
+			
+			return true;
+			
 		}
 		
-		return true;
+		return false;
 	}
 
 	@Override
