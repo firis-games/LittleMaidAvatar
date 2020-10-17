@@ -125,7 +125,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		if (counter == 0) lmAvatarWaitCounter = owner.ticksExisted;
 		
 		//100tickで待機状態On
-		if ((owner.ticksExisted - counter) >= 100) {
+		if ((owner.ticksExisted - counter) >= FirisConfig.cfg_lmavatar_wait_motion_time) {
 			this.lmAvatarWaitAction = true;
 		}
 	}

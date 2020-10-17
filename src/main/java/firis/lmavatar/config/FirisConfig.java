@@ -26,10 +26,13 @@ public class FirisConfig {
 	public static boolean cfg_lmavatar_first_login_add_inventory_item = true;
 	
 	/** LMアバターのサイズをマルチモデルにアジャストする */
-	public static boolean cfg_lmavatar_adjust_size = true;
+	public static boolean cfg_lmavatar_adjust_size = false;
 	
 	/** LMアバターのサイズをアジャストする際のサイズ倍率を指定する */
 	public static float cfg_lmavatar_adjust_size_scale = 1.0F;
+	
+	/** LMアバターの待機モーションへの変更待ち時間 */
+	public static int cfg_lmavatar_wait_motion_time = 100;
 	
 	/**
 	 * メイドさんモデル
@@ -116,6 +119,10 @@ public class FirisConfig {
 		//cfg_lmavatar_adjust_sizeが有効な際の倍率設定
 		cfg_lmavatar_adjust_size_scale = config.getFloat("LittleMaidAvatarDev.AdjustSizeScale", CATEGORY_GENERAL, 1.0F, 0.1F, 2.0F, 
 				"マルチモデルのサイズに調整機能が有効な場合にプレイヤーサイズの全体倍率を指定します。");
+		
+		//LMアバターの待機モーションへの変更待ち時間
+		cfg_lmavatar_wait_motion_time = config.getInt("LittleMaidAvatar.WaitMotionTickTime", CATEGORY_GENERAL, 100, 0, 10000, 
+				"LMアバターの待機モーションへの変更待ち時間をtikcで設定します。");
 		
 		//--------------------------------------------------
 		
