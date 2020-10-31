@@ -16,7 +16,7 @@ import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.manager.SyncPlayerModelServer;
 import firis.lmavatar.common.modelmotion.LMMotionCarryOn;
-import firis.lmavatar.common.network.NetworkHandler;
+import firis.lmavatar.common.network.LMAvatarNetwork;
 import firis.lmavatar.common.proxy.IProxy;
 import firis.lmavatar.config.ConfigChangedEventHandler;
 import firis.lmavatar.config.FirisConfig;
@@ -98,7 +98,7 @@ public class LittleMaidAvatar {
         MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
         MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
         
-        NetworkHandler.preInit();
+        //NetworkHandler.preInit();
         
 		//追加モーション設定
 		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
@@ -128,6 +128,8 @@ public class LittleMaidAvatar {
     		registerClient();
     	}
     	
+    	//ネットワーク登録
+    	LMAvatarNetwork.init();
     }
     
     @EventHandler

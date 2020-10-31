@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import firis.lmavatar.common.network.NetworkHandler;
-import firis.lmavatar.common.network.PacketSendNBTTagCompound;
+import firis.lmavatar.common.network.LMAvatarNetwork;
+import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -94,7 +94,7 @@ public class SyncPlayerModelServer {
 			
 			//全クライアントへ送信する
 			//LMRNetwork.sendPacketToAllPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, -1, send);
-			NetworkHandler.sendPacketToClientAll(PacketSendNBTTagCompound.CLIENT_SYNC_SERVER_LMAVATAR, send);
+			LMLibraryAPI.instance().sendPacketToClientAll(LMAvatarNetwork.CLIENT_SYNC_SERVER_LMAVATAR, send);
 		}
 		
 	}

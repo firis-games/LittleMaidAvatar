@@ -3,8 +3,8 @@ package firis.lmavatar.common.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmavatar.common.network.NetworkHandler;
-import firis.lmavatar.common.network.PacketSendNBTTagCompound;
+import firis.lmavatar.common.network.LMAvatarNetwork;
+import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -81,7 +81,7 @@ public class LMAvatarCommand extends CommandBase {
 		nbt.setString("command", cmdMode);
 		nbt.setString("param", param);
 		//LMRNetwork.sendPacketToPlayer(EnumPacketMode.CLIENT_COMMAND_EXECUTE, 0, nbt, entityplayer);
-		NetworkHandler.sendPacketToClientPlayer(PacketSendNBTTagCompound.CLIENT_COMMAND_EXECUTE, nbt, entityplayer);
+		LMLibraryAPI.instance().sendPacketToClientPlayer(LMAvatarNetwork.CLIENT_COMMAND_EXECUTE, nbt, entityplayer);
 		
 	}
 	
