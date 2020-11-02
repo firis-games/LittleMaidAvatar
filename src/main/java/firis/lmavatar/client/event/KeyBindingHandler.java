@@ -8,13 +8,12 @@ import org.lwjgl.input.Keyboard;
 import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
-import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
-import firis.lmavatar.config.FirisConfig;
+import firis.lmavatar.common.modelcaps.PlayerModelCompound;
+import firis.lmavatar.resource.LMAvatarResourceManager;
 import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -73,15 +72,15 @@ public class KeyBindingHandler {
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction9);
 		
 		//キーリスト
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction1, FirisConfig.cfg_motion_key1);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction2, FirisConfig.cfg_motion_key2);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction3, FirisConfig.cfg_motion_key3);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction4, FirisConfig.cfg_motion_key4);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction5, FirisConfig.cfg_motion_key5);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction6, FirisConfig.cfg_motion_key6);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, FirisConfig.cfg_motion_key7);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, FirisConfig.cfg_motion_key8);
-		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, FirisConfig.cfg_motion_key9);
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction1, "Key1");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction2, "Key2");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction3, "Key3");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction4, "Key4");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction5, "Key5");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction6, "Key6");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction7, "Key7");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction8, "Key8");
+		keyLittleMaidAvatarActionList.put(keyLittleMaidAvatarAction9, "Key9");
 		
 	}
 	
@@ -95,29 +94,30 @@ public class KeyBindingHandler {
 		if (keyLittleMaidAvatarAction.isKeyDown()) {
 			//アクションの制御はすべてClient側で行う
 			EntityPlayer player = Minecraft.getMinecraft().player;
-			PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
+			PlayerModelCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
 			lmAvatar.setLMAvatarAction(1);
 			
 			//同期する
-			SyncPlayerModelClient.syncModel();
+			SyncPlayerModelClient.instance.syncPlayerAction();
 			
 		} else if (keyLittleMaidAvatarChange.isKeyDown()) {
-			//GuiConfigの変更
-			Property propEnableLMAvatar = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "07.EnableLMAvatar", FirisConfig.cfg_enable_lmavatar);
-			propEnableLMAvatar.set(!FirisConfig.cfg_enable_lmavatar);
-			FirisConfig.syncConfig();
+			//LMアバターの有効無効を変更
+			PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(Minecraft.getMinecraft().player);
+			playerModel.setEnableLMAvatar(!playerModel.getEnableLMAvatar());
+			//キャッシュへ反映
+			playerModel.syncPlayerModeCache();
+
 		}
 		
 		//連番アクション
 		for (KeyBinding keyAction : keyLittleMaidAvatarActionList.keySet()) {
 			if (keyAction.isKeyDown()) {
 				//アクションの制御はすべてClient側で行う
-				EntityPlayer player = Minecraft.getMinecraft().player;
-				PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
-				lmAvatar.setLMAvatarAction(LMLibraryAPI.instance().getLMMotionIndex(keyLittleMaidAvatarActionList.get(keyAction)));
-				
+				PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(Minecraft.getMinecraft().player);
+				String keyId = LMAvatarResourceManager.getMotionKey(keyLittleMaidAvatarActionList.get(keyAction));
+				playerModel.setLMAvatarAction(LMLibraryAPI.instance().getLMMotionIndex(keyId));
 				//同期する
-				SyncPlayerModelClient.syncModel();
+				SyncPlayerModelClient.instance.syncPlayerAction();
 				break;
 			}
 		}

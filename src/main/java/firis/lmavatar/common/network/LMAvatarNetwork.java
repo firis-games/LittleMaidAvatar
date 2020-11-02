@@ -4,7 +4,8 @@ import java.util.function.Consumer;
 
 import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.command.LMAvatarCommandClient;
-import firis.lmavatar.common.manager.PlayerModelManager;
+import firis.lmavatar.common.manager.SyncPlayerModelClient;
+import firis.lmavatar.common.manager.SyncPlayerModelServer;
 import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -28,7 +29,7 @@ public class LMAvatarNetwork {
     	LMLibraryAPI.instance().registerNetwork(SERVER_SYNC_CLIENT_LMAVATAR, new Consumer<NBTTagCompound>() {
 			@Override
 			public void accept(NBTTagCompound arg0) {
-				PlayerModelManager.reciveLMAvatarDataFromClient(arg0);
+				SyncPlayerModelServer.instance.recivePacketFromClient(arg0);
 			}
     	});
     	
@@ -36,7 +37,7 @@ public class LMAvatarNetwork {
     	LMLibraryAPI.instance().registerNetwork(CLIENT_SYNC_SERVER_LMAVATAR, new Consumer<NBTTagCompound>() {
 			@Override
 			public void accept(NBTTagCompound arg0) {
-				PlayerModelManager.receiveLMAvatarDataFromServer(arg0);
+				SyncPlayerModelClient.instance.recivePacketFromServer(arg0);
 			}
     	});
     	

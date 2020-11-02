@@ -3,7 +3,7 @@ package firis.lmavatar.common.event;
 import java.lang.reflect.Method;
 
 import firis.lmavatar.common.manager.PlayerModelManager;
-import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
+import firis.lmavatar.common.modelcaps.PlayerModelCompound;
 import firis.lmavatar.config.FirisConfig;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -27,7 +27,7 @@ public class PlayerTickEventHandler {
 		//設定が無効な場合は何もしない
 		if (!FirisConfig.cfg_lmavatar_adjust_size) return;
 
-		PlayerModelConfigCompound playerModel = PlayerModelManager.getModelConfigCompound(event.player);
+		PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(event.player);
 
 		// 通常モデルの場合は何もしない
 		if (!playerModel.getEnableLMAvatar()) {

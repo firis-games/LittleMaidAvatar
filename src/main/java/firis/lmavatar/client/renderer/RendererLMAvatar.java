@@ -11,7 +11,7 @@ import firis.lmavatar.client.renderer.layer.LayerElytraLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerEntityOnShoulderLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerHeldItemLMAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
-import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
+import firis.lmavatar.common.modelcaps.PlayerModelCompound;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.client.model.LMModelLittleMaid;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -153,7 +153,7 @@ public class RendererLMAvatar extends RenderPlayer {
 			GL11.glScalef(lscale, lscale, lscale);
 		}
 		
-		PlayerModelConfigCompound playerModel = PlayerModelManager.getModelConfigCompound(entitylivingbaseIn);
+		PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(entitylivingbaseIn);
 		lscale = playerModel.getPlayerScale();
 		if (lscale != 1.0F) {
 			GL11.glScalef(lscale, lscale, lscale);
@@ -249,7 +249,7 @@ public class RendererLMAvatar extends RenderPlayer {
 			double x, double y, double z, float entityYaw, float partialTicks) {
 		
 		//モデルパラメータ取得
-		PlayerModelConfigCompound modelConfigCompound = PlayerModelManager.getModelConfigCompound(entity);
+		PlayerModelCompound modelConfigCompound = PlayerModelManager.getModelConfigCompound(entity);
 		
 		//影のサイズ変更
 		this.shadowSize = this.shadowSize * modelConfigCompound.getPlayerScale();

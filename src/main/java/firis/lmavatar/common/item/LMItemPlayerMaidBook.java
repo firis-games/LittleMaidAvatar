@@ -5,7 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import firis.lmavatar.LittleMaidAvatar;
-import firis.lmavatar.config.FirisConfig;
+import firis.lmavatar.common.manager.PlayerModelManager;
+import firis.lmavatar.common.modelcaps.PlayerModelCompound;
 import firis.lmlib.api.caps.IModelCompoundEntity;
 import firis.lmlib.api.entity.ILMModelEntity;
 import net.minecraft.client.resources.I18n;
@@ -22,7 +23,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,59 +77,58 @@ public class LMItemPlayerMaidBook extends Item {
 		String armorModelNameLegs = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.LEGS);
 		String armorModelNameFeet = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.FEET);
 		
+		
+		//Playerへ反映
+		PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(player);
+		
+		playerModel.setTextureArmor(EntityEquipmentSlot.HEAD, armorModelNameHead);
+		playerModel.setTextureArmor(EntityEquipmentSlot.CHEST, armorModelNameChest);
+		playerModel.setTextureArmor(EntityEquipmentSlot.LEGS, armorModelNameLegs);
+		playerModel.setTextureArmor(EntityEquipmentSlot.FEET, armorModelNameFeet);
+		
+		
 		//メイドモデルの設定
 		if (!player.isSneaking()) {
 			
-			//Config操作用
-			Property propModel = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "01.MaidModel", FirisConfig.cfg_maid_model);
-			Property propModelColor = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "02.MaidColorNo", FirisConfig.cfg_maid_color);
-
-			//メイドモデルの指定
-			propModel.set(maidModelName);
-			propModelColor.set(maidModelColor);
+			playerModel.setTextureLittleMaid(maidModelName);
+			playerModel.setColor(maidModelColor);
 			
 		//アーマーモデルの設定
 		} else {
-			
-			//Config操作用
-			Property propModelArmorHelmet = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "03.ArmorHelmetModel", FirisConfig.cfg_armor_model_head);
-			Property propModelArmorChest = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "04.ArmorChestplateModel", FirisConfig.cfg_armor_model_body);
-			Property propModelArmorLegg = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "05.ArmorLeggingsModel", FirisConfig.cfg_armor_model_leg);
-			Property propModelArmorBoots = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "06.ArmorBootsModel", FirisConfig.cfg_armor_model_boots);
-			
+						
 			//スニーク中はアーマーモデルも設定
 			if (player.getHeldItemOffhand().isEmpty()) {
 				
 				//全部のモデルを反映
-				propModelArmorHelmet.set(armorModelNameHead);
-				propModelArmorChest.set(armorModelNameChest);
-				propModelArmorLegg.set(armorModelNameLegs);
-				propModelArmorBoots.set(armorModelNameFeet);
+				playerModel.setTextureArmor(EntityEquipmentSlot.HEAD, armorModelNameHead);
+				playerModel.setTextureArmor(EntityEquipmentSlot.CHEST, armorModelNameChest);
+				playerModel.setTextureArmor(EntityEquipmentSlot.LEGS, armorModelNameLegs);
+				playerModel.setTextureArmor(EntityEquipmentSlot.FEET, armorModelNameFeet);
 				
 			} else {
 				ItemStack offHandStack = player.getHeldItemOffhand();
 				//頭防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.HEAD, player)) {
-					propModelArmorHelmet.set(armorModelNameHead);
+					playerModel.setTextureArmor(EntityEquipmentSlot.HEAD, armorModelNameHead);
 				}
 				//胴防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.CHEST, player)) {
-					propModelArmorChest.set(armorModelNameChest);
+					playerModel.setTextureArmor(EntityEquipmentSlot.CHEST, armorModelNameChest);
 				}
 				//腰防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.LEGS, player)) {
-					propModelArmorLegg.set(armorModelNameLegs);
+					playerModel.setTextureArmor(EntityEquipmentSlot.LEGS, armorModelNameLegs);
 				}
 				//足防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.FEET, player)) {
-					propModelArmorBoots.set(armorModelNameFeet);
+					playerModel.setTextureArmor(EntityEquipmentSlot.FEET, armorModelNameFeet);
 				}
 			}
 		}
 		
-		//設定ファイル同期
-		FirisConfig.syncConfig();
-		
+		//キャッシュへ反映
+		playerModel.syncPlayerModeCache();
+
 	}
 	
 	@Override

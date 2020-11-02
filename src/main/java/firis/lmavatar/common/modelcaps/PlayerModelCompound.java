@@ -1,7 +1,7 @@
 package firis.lmavatar.common.modelcaps;
 
-import java.util.UUID;
-
+import firis.lmavatar.LittleMaidAvatar;
+import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IGuiTextureSelect;
@@ -15,7 +15,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Property;
 
 /**
  * PlayerAvatar用パラメータクラス
@@ -24,7 +23,7 @@ import net.minecraftforge.common.config.Property;
  * モーションなどの表示フラグもここで管理する
  *
  */
-public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPlayer> implements IGuiTextureSelect {
+public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> implements IGuiTextureSelect {
 	
 	/**
 	 * LMAvatarが有効化どうかの判断
@@ -62,7 +61,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	 * @param entity
 	 * @param caps
 	 */
-	public PlayerModelConfigCompound(EntityPlayer entity, IModelCapsEntity caps) {
+	public PlayerModelCompound(EntityPlayer entity, IModelCapsEntity caps) {
 		super(entity, caps);
 	}
 	
@@ -184,6 +183,8 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		
 		//モーション系
 		nbt.setInteger("action", this.lmAvatarAction);
+		nbt.setBoolean("enable", this.enableLMAvatar);
+		nbt.setBoolean("wait", this.lmAvatarWaitAction);
 
 		return nbt;
 	}
@@ -198,8 +199,10 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		String armorChest = nbt.getString("chest");
 		String armorLegs = nbt.getString("legs");
 		String armorFeet = nbt.getString("feet");
-		
+
 		Integer color = nbt.getInteger("color");
+		boolean contract = nbt.getBoolean("contract");
+		boolean enable = nbt.getBoolean("enable");
 		
 		//展開
 		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(maid));
@@ -207,39 +210,15 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorChest));
 		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorLegs));
 		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorFeet));
+		
 		this.setColor(color);
+		this.setContract(contract);
+		this.setEnableLMAvatar(enable);
 		
 		//モーション系
 		this.lmAvatarAction = nbt.getInteger("action");
+		this.lmAvatarWaitAction = nbt.getBoolean("wait");
 		
-	}
-	
-	/**
-	 * デフォルト状態のNBTを作成する
-	 * @return
-	 */
-	public static NBTTagCompound createDefaultNBT(UUID uuid) {
-		NBTTagCompound nbt = new NBTTagCompound();
-		
-		LMTextureBox maidBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_maid_model);
-		LMTextureBox headBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_head);
-		LMTextureBox bodyBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_body);
-		LMTextureBox legBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_leg);
-		LMTextureBox bootsBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_boots);
-		
-		//必要な情報のみNBT化
-		nbt.setUniqueId("uuid", uuid);
-		nbt.setString("maid", maidBox.getTextureModelName());
-		nbt.setInteger("color", FirisConfig.cfg_maid_color);
-		nbt.setString("head", headBox.getTextureModelName());
-		nbt.setString("chest", bodyBox.getTextureModelName());
-		nbt.setString("legs", legBox.getTextureModelName());
-		nbt.setString("feet", bootsBox.getTextureModelName());
-		
-		//モーション系
-		nbt.setBoolean("action", false);
-
-		return nbt;
 	}
 	
 	/**
@@ -318,41 +297,69 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	public boolean getGuiTargetContract() {
 		return true;
 	}
-
-	@Override
-	public void syncSelectTextureLittleMaid(String textureName, int color) {
-		
-		//Config操作用
-		Property propModel = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "01.MaidModel", FirisConfig.cfg_maid_model);
-		Property propModelColor = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "02.MaidColorNo", FirisConfig.cfg_maid_color);
-		
-		//メイドモデルの指定
-		propModel.set(textureName);
-		propModelColor.set(color);
-		
-		FirisConfig.syncConfig();
-		
-	}
-
-	@Override
-	public void syncSelectTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
-		//Config操作用
-		Property propModelArmorHelmet = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "03.ArmorHelmetModel", FirisConfig.cfg_armor_model_head);
-		Property propModelArmorChest = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "04.ArmorChestplateModel", FirisConfig.cfg_armor_model_body);
-		Property propModelArmorLegg = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "05.ArmorLeggingsModel", FirisConfig.cfg_armor_model_leg);
-		Property propModelArmorBoots = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "06.ArmorBootsModel", FirisConfig.cfg_armor_model_boots);
-		
-		//全部のモデルを反映
-		propModelArmorHelmet.set(headTextureName);
-		propModelArmorChest.set(chestTextureName);
-		propModelArmorLegg.set(legsTextureName);
-		propModelArmorBoots.set(feetTextureName);
-		
-		FirisConfig.syncConfig();
-		
+	
+	
+	/**
+	 * メイドさんモデルを設定する(名称)
+	 */
+	public void setTextureLittleMaid(String texture) {
+		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(texture));
 	}
 	
 	/**
+	 * 防具モデルを設定する(名称)
+	 * @param textureBox
+	 * @param slot
+	 */
+	public void setTextureArmor(EntityEquipmentSlot slot, String texture) {
+		this.setTextureBoxArmor(slot, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(texture));
+	}
+
+	/**
+	 * GUIからの変更時の同期処理
+	 */
+	@Override
+	public void syncSelectTextureLittleMaid(String textureName, int color) {
+		
+		this.setPlayer(LittleMaidAvatar.proxy.getClientPlayer());
+		
+		//メイドモデル反映
+		this.setTextureLittleMaid(textureName);
+		this.setColor(color);
+		
+		//キャッシュへ反映
+		this.syncPlayerModeCache();
+	}
+
+	/**
+	 * GUIからの変更時の同期処理
+	 */
+	@Override
+	public void syncSelectTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
+
+		this.setPlayer(LittleMaidAvatar.proxy.getClientPlayer());
+
+		//防具モデル反映
+		this.setTextureArmor(EntityEquipmentSlot.HEAD, headTextureName);
+		this.setTextureArmor(EntityEquipmentSlot.CHEST, chestTextureName);
+		this.setTextureArmor(EntityEquipmentSlot.LEGS, legsTextureName);
+		this.setTextureArmor(EntityEquipmentSlot.FEET, feetTextureName);
+		
+		//キャッシュへ反映
+		this.syncPlayerModeCache();
+	}
+	
+	/***
+	 * PlayerModel情報をキャッシュへ投入する
+	 */
+	public void syncPlayerModeCache() {
+		SyncPlayerModelClient.instance.setPlayerModelNBTTagCompound(
+				LittleMaidAvatar.proxy.getClientPlayer().getName(), 
+				this.serializeToNBT(new NBTTagCompound()));		
+	}
+	
+	/**
+	 * 試験用機能
 	 * プレイヤーの幅
 	 * @return
 	 */
@@ -365,6 +372,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	}
 	
 	/**
+	 * 試験用機能
 	 * プレイヤーの高さ
 	 * @return
 	 */
@@ -377,6 +385,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	}
 	
 	/**
+	 * 試験用機能
 	 * プレイヤーの目線
 	 * @return
 	 */
@@ -385,6 +394,7 @@ public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPla
 	}
 	
 	/**
+	 * 試験用機能
 	 * プレイヤースケール取得
 	 * @return
 	 */

@@ -1,7 +1,5 @@
 package firis.lmavatar;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,15 +10,13 @@ import firis.lmavatar.client.event.LittleMaidAvatarClientTickEventHandler;
 import firis.lmavatar.client.renderer.RendererLMAvatar;
 import firis.lmavatar.common.command.LMAvatarCommand;
 import firis.lmavatar.common.item.LMItemPlayerMaidBook;
-import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.manager.SyncPlayerModelServer;
 import firis.lmavatar.common.modelmotion.LMMotionCarryOn;
 import firis.lmavatar.common.network.LMAvatarNetwork;
 import firis.lmavatar.common.proxy.IProxy;
-import firis.lmavatar.config.ConfigChangedEventHandler;
 import firis.lmavatar.config.FirisConfig;
-import firis.lmavatar.config.json.JConfigLMAvatarManager;
+import firis.lmavatar.resource.LMAvatarResourceManager;
 import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -52,8 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		name = LittleMaidAvatar.NAME,
 		version = LittleMaidAvatar.VERSION,
 		dependencies = LittleMaidAvatar.MOD_DEPENDENCIES,
-		acceptedMinecraftVersions = LittleMaidAvatar.MOD_ACCEPTED_MINECRAFT_VERSIONS,
-		guiFactory = "firis.lmavatar.config.FirisConfigGuiFactory"
+		acceptedMinecraftVersions = LittleMaidAvatar.MOD_ACCEPTED_MINECRAFT_VERSIONS
 )
 @EventBusSubscriber(modid=LittleMaidAvatar.MODID)
 public class LittleMaidAvatar {
@@ -91,14 +86,8 @@ public class LittleMaidAvatar {
 		//設定読込
         FirisConfig.init(event.getModConfigurationDirectory());
         
-        //カスタム設定読込
-        JConfigLMAvatarManager.init();
-        
-        //LMアバター管理用イベント登録
-        MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
-        MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
-        
-        //NetworkHandler.preInit();
+        //独自設定初期化
+        LMAvatarResourceManager.preInit();
         
 		//追加モーション設定
 		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
@@ -108,20 +97,8 @@ public class LittleMaidAvatar {
     @EventHandler
     public void init(FMLInitializationEvent event) {
     	
-    	//設定を初期化
-    	if (FirisConfig.cfg_motion_key_reset) {
-	    	//1-9キー
-	    	List<String> motionList = new ArrayList<>();
-	    	for (int i = 1; i <= 9; i++) {
-	    		String motionId = LMLibraryAPI.instance().getLMMotionId(i);
-	    		if (motionId == null) {
-	    			break;
-	    		}
-	    		motionList.add(motionId);
-	    	}
-	    	FirisConfig.resetMotionKey(motionList);
-    	}
-    	//設定へ反映
+    	//LMアバター同期用
+    	MinecraftForge.EVENT_BUS.register(SyncPlayerModelServer.instance);
     	
     	//Renderer差し替え
     	if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
@@ -130,6 +107,9 @@ public class LittleMaidAvatar {
     	
     	//ネットワーク登録
     	LMAvatarNetwork.init();
+    	
+    	//独自設定初期化
+        LMAvatarResourceManager.init();
     }
     
     @EventHandler
@@ -147,7 +127,7 @@ public class LittleMaidAvatar {
 		event.registerServerCommand(new LMAvatarCommand());
 		
 	}
-    
+	
     /**
      * Renderer登録
      */
@@ -174,19 +154,14 @@ public class LittleMaidAvatar {
 		
 		skinMap.put("default", renderMaidPlayerDefault);
 		skinMap.put("slim", renderMaidPlayerSlim);
-		
-		
-		//GuiConfig更新イベント登録
-		MinecraftForge.EVENT_BUS.register(ConfigChangedEventHandler.class);
-		
-		
+				
 		KeyBindingHandler.init();
 		
 		MinecraftForge.EVENT_BUS.register(KeyBindingHandler.class);
 		MinecraftForge.EVENT_BUS.register(LittleMaidAvatarClientTickEventHandler.class);
 		
 		//LMアバター管理用イベント登録
-        MinecraftForge.EVENT_BUS.register(new SyncPlayerModelClient());
+        MinecraftForge.EVENT_BUS.register(SyncPlayerModelClient.instance);
     }
     
     /**

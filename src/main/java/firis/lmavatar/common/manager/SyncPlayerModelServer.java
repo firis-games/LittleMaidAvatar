@@ -1,8 +1,6 @@
 package firis.lmavatar.common.manager;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import firis.lmavatar.common.network.LMAvatarNetwork;
 import firis.lmlib.api.LMLibraryAPI;
@@ -15,21 +13,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 /**
  * サーバー側のパケット送信処理
  * 
- * キューにUUIDを貯めて一定時間ごとにパケットをまとめて投げる
+ * 一定タイミングごとに同期パケットを投げる？
  * 
  * @author firis-games
  *
  */
-public class SyncPlayerModelServer {
-
-	private final static Set<String> syncPacketQueue = new HashSet<>();
+public class SyncPlayerModelServer extends AbstractSyncPlayerModel {
 	
 	/**
-	 * モデルの同期を行う
+	 * インスタンス
 	 */
-	public static void syncModel(String key) {
-		syncPacketQueue.add(key);
-	}
+	public static SyncPlayerModelServer instance = new SyncPlayerModelServer();
 	
 	/**
 	 * サーバーサイドのtick処理
@@ -43,42 +37,32 @@ public class SyncPlayerModelServer {
 	}
 	
 	/**
-	 * Tickの最後で処理を行う
+	 * Tickの最後で同期処理を実行
 	 * @param event
 	 */
 	protected void onWorldTickEventPost(WorldTickEvent event) {
 		
-		Iterator<String> syncPacketIterator = syncPacketQueue.iterator();
-		
+		Iterator<String> syncPacketIterator = this.syncPacketQueue.iterator();
 		NBTTagList tagList = new NBTTagList();
-		
 		while (syncPacketIterator.hasNext()) {
 			//NBT取得
-			NBTTagCompound tagCompound = getAvatarModelNbt(syncPacketIterator.next());
-			if (tagCompound != null) {
-				tagList.appendTag(tagCompound);				
-			}
-			//削除
+			NBTTagCompound tagCompound = this.getPlayerModelNbt(syncPacketIterator.next());
+			tagList.appendTag(tagCompound);
+			
+			//キュー削除
 			syncPacketIterator.remove();
 		}
 		
 		//条件に一致すればパケット送信
 		sendPacketToClient(tagList);
-
 	}
 	
 	/**
-	 * LMアバターのNBTを取得する
-	 * 対象が無い場合はnull
-	 * @param tagCompound
-	 * @return
+	 * 同期キューにプレイヤー名を登録
+	 * @param playerName
 	 */
-	protected NBTTagCompound getAvatarModelNbt(String key) {
-		if (!PlayerModelManager.serverModelNbtMap.containsKey(key)) {
-			return null;
-		}
-		NBTTagCompound tagCompound = PlayerModelManager.serverModelNbtMap.get(key);
-		return tagCompound;
+	protected void syncPlayerModel(String playerName) {
+		this.syncPacketQueue.add(playerName);
 	}
 	
 	/**
@@ -86,16 +70,29 @@ public class SyncPlayerModelServer {
 	 * @param uuid
 	 */
 	protected void sendPacketToClient(NBTTagList tagList) {
-		
 		//送信情報が0以上の場合はパケットを送信する
 		if (tagList.tagCount() > 0) {
 			NBTTagCompound send = new NBTTagCompound();
 			send.setTag("avatar", tagList);
-			
 			//全クライアントへ送信する
-			//LMRNetwork.sendPacketToAllPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, -1, send);
 			LMLibraryAPI.instance().sendPacketToClientAll(LMAvatarNetwork.CLIENT_SYNC_SERVER_LMAVATAR, send);
 		}
+	}
+		
+	
+	/**
+	 * クライアントから送信されたパケットを受け取る
+	 */
+	public void recivePacketFromClient(NBTTagCompound tagCompound) {
+		
+		//サーバーと同期するかの判断用
+		String playerName = tagCompound.getString("name");
+		
+		//クライアントから受け取った場合は無条件で上書きする
+		this.setPlayerModelNBTTagCompound(playerName, tagCompound);
+		
+		//パケットキューへ追加
+		this.syncPlayerModel(playerName);
 		
 	}
 }
