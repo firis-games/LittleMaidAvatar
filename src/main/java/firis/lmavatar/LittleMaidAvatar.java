@@ -98,7 +98,9 @@ public class LittleMaidAvatar {
     public void init(FMLInitializationEvent event) {
     	
     	//LMアバター同期用
-    	MinecraftForge.EVENT_BUS.register(SyncPlayerModelServer.instance);
+    	if (FirisConfig.cfg_lmavatar_multi_sync) {
+    		MinecraftForge.EVENT_BUS.register(SyncPlayerModelServer.instance);
+    	}
     	
     	//Renderer差し替え
     	if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
@@ -161,7 +163,9 @@ public class LittleMaidAvatar {
 		MinecraftForge.EVENT_BUS.register(LittleMaidAvatarClientTickEventHandler.class);
 		
 		//LMアバター管理用イベント登録
-        MinecraftForge.EVENT_BUS.register(SyncPlayerModelClient.instance);
+		if (FirisConfig.cfg_lmavatar_multi_sync) {
+			MinecraftForge.EVENT_BUS.register(SyncPlayerModelClient.instance);
+		}
     }
     
     /**

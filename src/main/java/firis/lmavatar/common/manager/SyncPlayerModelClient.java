@@ -3,6 +3,7 @@ package firis.lmavatar.common.manager;
 import java.util.Iterator;
 
 import firis.lmavatar.common.network.LMAvatarNetwork;
+import firis.lmavatar.config.FirisConfig;
 import firis.lmavatar.resource.LMAvatarResourceManager;
 import firis.lmlib.api.LMLibraryAPI;
 import net.minecraft.client.Minecraft;
@@ -100,7 +101,9 @@ public class SyncPlayerModelClient extends AbstractSyncPlayerModel {
 	 * プレイヤーのアクションを同期する
 	 */
 	public void syncPlayerAction() {
-		this.syncPacketQueue.add(Minecraft.getMinecraft().player.getName());
+		if (FirisConfig.cfg_lmavatar_multi_sync_action) {
+			this.syncPacketQueue.add(Minecraft.getMinecraft().player.getName());
+		}
 	}
 	
 	/**

@@ -28,6 +28,12 @@ public class FirisConfig {
 	/** LMアバターの待機モーションへの変更待ち時間 */
 	public static int cfg_lmavatar_wait_motion_time = 100;
 	
+	/** マルチ環境の同期処理を有効化する */
+	public static boolean cfg_lmavatar_multi_sync = false;
+	
+	/** マルチ環境のアクションの同期処理を有効化する */
+	public static boolean cfg_lmavatar_multi_sync_action = false;
+	
 	public static void init(File configDir) {
 		
 		File configFile = new File(configDir, "LittleMaidAvatar.cfg");
@@ -76,6 +82,14 @@ public class FirisConfig {
 		//LMアバターの待機モーションへの変更待ち時間
 		cfg_lmavatar_wait_motion_time = config.getInt("LittleMaidAvatar.WaitMotionTickTime", CATEGORY_GENERAL, 100, 0, 10000, 
 				"LMアバターの待機モーションへの変更待ち時間をtikcで設定します。");
+		
+		//マルチ環境の同期処理を有効化する
+		cfg_lmavatar_multi_sync = config.getBoolean("LittleMaidAvatarMulti.SyncModel", CATEGORY_GENERAL, false, 
+				"マルチ環境でLMアバターモデルの同期を有効化する。");
+		
+		//マルチ環境の同期処理を有効化する
+		cfg_lmavatar_multi_sync_action = config.getBoolean("LittleMaidAvatarMulti.SyncAction", CATEGORY_GENERAL, false, 
+				"マルチ環境でLMアバターモデルのアクションの同期を有効化する。モデルの同期を無効化している場合は自動で無効化される。");
 		
 		config.save();
 	}
