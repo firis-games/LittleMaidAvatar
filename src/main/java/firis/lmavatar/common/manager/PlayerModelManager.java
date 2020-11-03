@@ -48,7 +48,7 @@ public class PlayerModelManager {
 	 */
 	public static void setModelConfigCompound(String playerName, NBTTagCompound nbt) {
 		if (playerModelCompoundMap.containsKey(playerName)) {
-			playerModelCompoundMap.get(playerName).deserializeFromNBT(nbt);
+			playerModelCompoundMap.get(playerName).readFromNBT(nbt);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class PlayerModelManager {
 		NBTTagCompound nbt = SyncPlayerModelClient.instance.getPlayerModelNbt(playerName);
 		
 		PlayerModelCompound playerModelConfig = new PlayerModelCompound(null, null);
-		playerModelConfig.deserializeFromNBT(nbt);
+		playerModelConfig.readFromNBT(nbt);
 		
 		//セット
 		playerModelCompoundMap.put(playerName, playerModelConfig);

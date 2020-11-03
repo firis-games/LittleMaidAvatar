@@ -163,7 +163,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	/**
 	 * NBTへ変換する
 	 */
-	public NBTTagCompound serializeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		
 		String maid = this.getTextureBoxLittleMaid().getTextureModelName();
 		String armorHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD).getTextureModelName();
@@ -192,7 +192,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	/**
 	 * NBTから復元する
 	 */
-	public void deserializeFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		
 		String maid = nbt.getString("maid");
 		String armorHead = nbt.getString("head");
@@ -355,7 +355,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	public void syncPlayerModeCache() {
 		SyncPlayerModelClient.instance.setPlayerModelNBTTagCompound(
 				LittleMaidAvatar.proxy.getClientPlayer().getName(), 
-				this.serializeToNBT(new NBTTagCompound()));		
+				this.writeToNBT(new NBTTagCompound()));		
 	}
 	
 	/**

@@ -107,7 +107,7 @@ public class LMAvatarResourceManager {
 			
 			//初期化したPlayerModelを設定
 			PlayerModelCompound playerModel = new PlayerModelCompound(null, null);
-			playerModel.deserializeFromNBT(nbt);
+			playerModel.readFromNBT(nbt);
 			
 			//キャッシュを登録
 			SyncPlayerModelClient.instance.initPlayerModelNBTTagCompound(key, nbt);

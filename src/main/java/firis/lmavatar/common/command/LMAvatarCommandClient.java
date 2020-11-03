@@ -40,7 +40,7 @@ public class LMAvatarCommandClient {
 		PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(player);
 		
 		//設定ファイルへ保存
-		LMAvatarResourceManager.savaLMAvatarList(param, playerModel.serializeToNBT(new NBTTagCompound()));
+		LMAvatarResourceManager.savaLMAvatarList(param, playerModel.writeToNBT(new NBTTagCompound()));
 		
 		//終了後のメッセージ
 		if (isNew) {
@@ -71,7 +71,7 @@ public class LMAvatarCommandClient {
 		NBTTagCompound nbtModel = LMAvatarResourceManager.loadLMAvatarList(param);
 		
 		PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(player);
-		playerModel.deserializeFromNBT(nbtModel);
+		playerModel.readFromNBT(nbtModel);
 		
 		//キャッシュへ反映
 		playerModel.syncPlayerModeCache();
