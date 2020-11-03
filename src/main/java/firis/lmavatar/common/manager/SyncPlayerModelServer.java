@@ -11,10 +11,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 /**
- * サーバー側のパケット送信処理
+ * サーバー側マルチ環境用同期処理
  * 
- * 一定タイミングごとに同期パケットを投げる？
- * 
+ * クライアントから受け取った情報をすべてのクライアントへ再送信する
+ * キャッシュの保持等は行わない
+ *  
  * @author firis-games
  *
  */
@@ -67,7 +68,6 @@ public class SyncPlayerModelServer extends AbstractSyncPlayerModel {
 	
 	/**
 	 * クライアントへパケットを送信する
-	 * @param uuid
 	 */
 	protected void sendPacketToClient(NBTTagList tagList) {
 		//送信情報が0以上の場合はパケットを送信する
@@ -79,7 +79,6 @@ public class SyncPlayerModelServer extends AbstractSyncPlayerModel {
 		}
 	}
 		
-	
 	/**
 	 * クライアントから送信されたパケットを受け取る
 	 */

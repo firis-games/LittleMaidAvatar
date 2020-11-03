@@ -11,8 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * LMアバターモデル同期用ベースクラス
  * @author firis-games
  * 
- * EntityPlayerのインスタンスはディメンションチェンジ等で再生成される可能性があるため
- * プレイヤー名を元に一意を判断する
+ * EntityPlayerインスタンスはワールド移動などで再生成されるためプレイヤー名で管理する
  *
  */
 public abstract class AbstractSyncPlayerModel {

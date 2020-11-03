@@ -11,7 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
  * LMアバターの管理クラス
  * @author firis-games
  * 
- * クライアント側のみで参照される
+ * LMアバターを描画時にクライアント側の処理より参照される
+ * SyncPlayerModelClientのcacheをベースにPlayerModelCompoundを生成する
  *
  */
 public class PlayerModelManager {

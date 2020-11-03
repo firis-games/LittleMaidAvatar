@@ -165,26 +165,12 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	 */
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		
-		String maid = this.getTextureBoxLittleMaid().getTextureModelName();
-		String armorHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD).getTextureModelName();
-		String armorChest = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST).getTextureModelName();
-		String armorLegs = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS).getTextureModelName();
-		String armorFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET).getTextureModelName();
-		
-		//必要な情報のみNBT化
-		nbt.setUniqueId("uuid", this.owner.getUniqueID());
-		nbt.setString("name", this.owner.getName());
-		nbt.setString("maid", maid);
-		nbt.setInteger("color", this.color);
-		nbt.setString("head", armorHead);
-		nbt.setString("chest", armorChest);
-		nbt.setString("legs", armorLegs);
-		nbt.setString("feet", armorFeet);
+		super.writeToNBT(nbt);
 		
 		//モーション系
 		nbt.setInteger("action", this.lmAvatarAction);
-		nbt.setBoolean("enable", this.enableLMAvatar);
 		nbt.setBoolean("wait", this.lmAvatarWaitAction);
+		nbt.setBoolean("enable", this.enableLMAvatar);
 
 		return nbt;
 	}
@@ -194,30 +180,12 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	 */
 	public void readFromNBT(NBTTagCompound nbt) {
 		
-		String maid = nbt.getString("maid");
-		String armorHead = nbt.getString("head");
-		String armorChest = nbt.getString("chest");
-		String armorLegs = nbt.getString("legs");
-		String armorFeet = nbt.getString("feet");
-
-		Integer color = nbt.getInteger("color");
-		boolean contract = nbt.getBoolean("contract");
-		boolean enable = nbt.getBoolean("enable");
-		
-		//展開
-		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(maid));
-		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorHead));
-		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorChest));
-		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorLegs));
-		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorFeet));
-		
-		this.setColor(color);
-		this.setContract(contract);
-		this.setEnableLMAvatar(enable);
+		super.readFromNBT(nbt);
 		
 		//モーション系
 		this.lmAvatarAction = nbt.getInteger("action");
 		this.lmAvatarWaitAction = nbt.getBoolean("wait");
+		this.enableLMAvatar = nbt.getBoolean("enable");
 		
 	}
 	
@@ -296,23 +264,6 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	@Override
 	public boolean getGuiTargetContract() {
 		return true;
-	}
-	
-	
-	/**
-	 * メイドさんモデルを設定する(名称)
-	 */
-	public void setTextureLittleMaid(String texture) {
-		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(texture));
-	}
-	
-	/**
-	 * 防具モデルを設定する(名称)
-	 * @param textureBox
-	 * @param slot
-	 */
-	public void setTextureArmor(EntityEquipmentSlot slot, String texture) {
-		this.setTextureBoxArmor(slot, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(texture));
 	}
 
 	/**

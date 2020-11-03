@@ -14,10 +14,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 /**
- * クライアント側のパケット送信処理
+ * クライアント側マルチ環境用同期処理
  * 
- * キューにUUIDを貯めて一定時間ごとにパケットをまとめて投げる
- * サーバー側と同じ仕組みになっているがClient側はMinecraft.getMinecraft().playerしか動かない
+ * マルチモデル変更・アクション変更の際に同期キューへ登録する
+ * クライアント側はMinecraft.getMinecraft().playerのみパケットを送信する
+ * Minecraft.getMinecraft().playerは起動時には存在しないため初期化時にはアクセスしない
+ * EntityPlayerインスタンスはワールド移動などで再生成されるためプレイヤー名で管理する
  * 
  * @author firis-games
  *
@@ -30,15 +32,16 @@ public class SyncPlayerModelClient extends AbstractSyncPlayerModel {
 	public static SyncPlayerModelClient instance = new SyncPlayerModelClient();
 	
 	/**
-	 * キャッシュからの読込用
+	 * キャッシュファイルからの初期化時のみ呼び出す
+	 * @param name
+	 * @param modelCompound
 	 */
 	public void initPlayerModelNBTTagCompound(String name, NBTTagCompound modelCompound) {
 		super.setPlayerModelNBTTagCompound(name, modelCompound);
 	}
 	
-	
 	/**
-	 * 保存のタイミングでで一致チェック
+	 * マルチモデルの変更/サーバー側からの他プレイヤーの同期の際に呼び出される
 	 */
 	@Override
 	public void setPlayerModelNBTTagCompound(String name, NBTTagCompound modelCompound) {
@@ -141,7 +144,6 @@ public class SyncPlayerModelClient extends AbstractSyncPlayerModel {
 	
 	/**
 	 * サーバーへパケットを送信する
-	 * @param uuid
 	 */
 	protected void sendPacketToServer(NBTTagCompound nbt) {
 		if (nbt != null) {
@@ -166,10 +168,8 @@ public class SyncPlayerModelClient extends AbstractSyncPlayerModel {
 			String name = nbt.getString("name");
 			//自分自身はスキップ
 			if (!name.equals(playerName)) {
-				
 				//キャッシュへ反映
 				this.setPlayerModelNBTTagCompound(name, nbt);
-				
 				//PlayerModelへ反映
 				PlayerModelManager.setModelConfigCompound(name, nbt);
 			}
