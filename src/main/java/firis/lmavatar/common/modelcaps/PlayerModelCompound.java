@@ -109,6 +109,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	 */
 	public void setLMAvatarAction(Integer isAction) {
 		this.lmAvatarAction = isAction;
+		this.syncPlayerModeCache();
 	}
 	
 	/**
@@ -126,6 +127,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 		//100tickで待機状態On
 		if ((owner.ticksExisted - counter) >= FirisConfig.cfg_lmavatar_wait_motion_time) {
 			this.lmAvatarWaitAction = true;
+			this.syncPlayerModeCache();
 		}
 	}
 	
@@ -134,6 +136,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	 */
 	public void resetLMAvatarAction() {
 		this.lmAvatarAction = 0;
+		this.syncPlayerModeCache();
 	}
 	
 	/**
@@ -142,6 +145,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	public void resetLMAvatarWaitAction() {
 		this.lmAvatarWaitAction = false;
 		this.lmAvatarWaitCounter = owner.ticksExisted;
+		this.syncPlayerModeCache();
 	}
 	
 	/**
