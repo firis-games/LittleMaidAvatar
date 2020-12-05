@@ -13,6 +13,7 @@ import firis.lmavatar.common.item.LMItemPlayerMaidBook;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.manager.SyncPlayerModelServer;
 import firis.lmavatar.common.modelmotion.LMMotionCarryOn;
+import firis.lmavatar.common.modelmotion.LMMotionSwimming;
 import firis.lmavatar.common.network.LMAvatarNetwork;
 import firis.lmavatar.common.proxy.IProxy;
 import firis.lmavatar.config.FirisConfig;
@@ -91,6 +92,7 @@ public class LittleMaidAvatar {
         
 		//追加モーション設定
 		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionCarryOn());
+		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionSwimming());
     	
     }
     
