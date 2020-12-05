@@ -52,11 +52,11 @@ public class LayerHeldItemLMAvatar extends LMLayerHeldItemBase {
 	@Override
 	protected void translateAdjustment(EntityLivingBase entitylivingbaseIn, ItemStack stackIn, ItemCameraTransforms.TransformType transformType, EnumHandSide handSide) {
 		
-		boolean flag = entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT;
+		boolean flag = entitylivingbaseIn.getPrimaryHand() == handSide;
 		
 		//Block系アイテムの位置調整
 		if (EnumAction.BLOCK == PlayerModelCaps.getPlayerAction((EntityPlayer) entitylivingbaseIn, handSide)) {
-			if (!flag) {
+			if (flag) {
 				//右手調整
 				GlStateManager.rotate(55, 0.0F, 1.0F, 0.0F);
 				GlStateManager.translate(-0.15F, 0.2F, 0.0F);
