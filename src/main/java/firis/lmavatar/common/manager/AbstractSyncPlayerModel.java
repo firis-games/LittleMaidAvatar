@@ -29,7 +29,7 @@ public abstract class AbstractSyncPlayerModel {
 	 * @param name
 	 * @param modelCompound
 	 */
-	public void setPlayerModelNBTTagCompound(String name, NBTTagCompound modelCompound) {
+	protected void setPlayerModelNBTTagCompound(String name, NBTTagCompound modelCompound) {
 		modelNbtMap.put(name, modelCompound);
 	}
 	

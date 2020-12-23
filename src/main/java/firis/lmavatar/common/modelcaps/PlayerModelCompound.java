@@ -85,8 +85,8 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 	 * アクション中の判断
 	 * @return
 	 */
-	public boolean isLMAvatarAction() {
-		return this.lmAvatarAction != 0;
+	public int isLMAvatarAction() {
+		return this.lmAvatarAction;
 	}
 	
 	/**
@@ -279,7 +279,7 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 		this.setColor(color);
 		
 		//キャッシュへ反映
-		this.syncPlayerModeCache();
+		this.syncPlayerModelCache();
 	}
 
 	/**
@@ -297,13 +297,26 @@ public class PlayerModelCompound extends ModelCompoundEntityBase<EntityPlayer> i
 		this.setTextureArmor(EntityEquipmentSlot.FEET, feetTextureName);
 		
 		//キャッシュへ反映
-		this.syncPlayerModeCache();
+		this.syncPlayerModelCache();
+	}
+	
+
+	/***
+	 * PlayerModel情報をキャッシュへ投入する
+	 * アクション同期の際の呼び出し先
+	 */
+	public void syncPlayerModelCacheWithAction() {
+		if (!FirisConfig.cfg_lmavatar_multi_sync_action) {
+			return;
+		}
+		this.syncPlayerModelCache();
 	}
 	
 	/***
 	 * PlayerModel情報をキャッシュへ投入する
 	 */
-	public void syncPlayerModeCache() {
+	public void syncPlayerModelCache() {
+		//プレイヤーモデル情報をクライアントキャッシュへ書き出す
 		SyncPlayerModelClient.instance.setPlayerModelNBTTagCompound(
 				LittleMaidAvatar.proxy.getClientPlayer().getName(), 
 				this.writeToNBT(new NBTTagCompound()));		

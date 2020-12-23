@@ -1,7 +1,6 @@
 package firis.lmavatar.client.event;
 
 import firis.lmavatar.common.manager.PlayerModelManager;
-import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.modelcaps.PlayerModelCaps;
 import firis.lmavatar.common.modelcaps.PlayerModelCompound;
 import net.minecraft.client.Minecraft;
@@ -38,7 +37,7 @@ public class LittleMaidAvatarClientTickEventHandler {
 		
 		PlayerModelCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
 		
-		boolean lmAvatarAction = lmAvatar.isLMAvatarAction();
+		int lmAvatarAction = lmAvatar.isLMAvatarAction();
 		boolean lmAvatarWaitAction = lmAvatar.getLMAvatarWaitAction();
 		
 		//アクション解除
@@ -85,7 +84,7 @@ public class LittleMaidAvatarClientTickEventHandler {
 		if (lmAvatarAction != lmAvatar.isLMAvatarAction()
 				|| lmAvatarWaitAction != lmAvatar.getLMAvatarWaitAction()) {
 			//同期処理
-			SyncPlayerModelClient.instance.syncPlayerAction();
+			lmAvatar.syncPlayerModelCacheWithAction();
 		}
 		
 	}

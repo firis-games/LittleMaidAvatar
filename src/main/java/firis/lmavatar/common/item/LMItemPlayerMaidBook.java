@@ -127,7 +127,7 @@ public class LMItemPlayerMaidBook extends Item {
 		}
 		
 		//キャッシュへ反映
-		playerModel.syncPlayerModeCache();
+		playerModel.syncPlayerModelCache();
 
 	}
 	

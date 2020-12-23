@@ -7,7 +7,6 @@ import org.lwjgl.input.Keyboard;
 
 import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
-import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.modelcaps.PlayerModelCompound;
 import firis.lmavatar.resource.LMAvatarResourceManager;
 import firis.lmlib.api.LMLibraryAPI;
@@ -98,14 +97,14 @@ public class KeyBindingHandler {
 			lmAvatar.setLMAvatarAction(1);
 			
 			//同期する
-			SyncPlayerModelClient.instance.syncPlayerAction();
+			lmAvatar.syncPlayerModelCacheWithAction();
 			
 		} else if (keyLittleMaidAvatarChange.isKeyDown()) {
 			//LMアバターの有効無効を変更
 			PlayerModelCompound playerModel = PlayerModelManager.getModelConfigCompound(Minecraft.getMinecraft().player);
 			playerModel.setEnableLMAvatar(!playerModel.getEnableLMAvatar());
 			//キャッシュへ反映
-			playerModel.syncPlayerModeCache();
+			playerModel.syncPlayerModelCache();
 
 		}
 		
@@ -117,7 +116,7 @@ public class KeyBindingHandler {
 				String keyId = LMAvatarResourceManager.getMotionKey(keyLittleMaidAvatarActionList.get(keyAction));
 				playerModel.setLMAvatarAction(LMLibraryAPI.instance().getLMMotionIndex(keyId));
 				//同期する
-				SyncPlayerModelClient.instance.syncPlayerAction();
+				playerModel.syncPlayerModelCacheWithAction();
 				break;
 			}
 		}

@@ -74,7 +74,7 @@ public class LMAvatarCommandClient {
 		playerModel.readFromNBT(nbtModel);
 		
 		//キャッシュへ反映
-		playerModel.syncPlayerModeCache();
+		playerModel.syncPlayerModelCache();
 		
 		//メッセージ表示
 		player.sendMessage(new TextComponentTranslation("commands.lmacommand.load", new Object[] {param}));
