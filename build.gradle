@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "1.2.1"
+version = "1.2.2"
 group= "firis.lmavatar" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "LittleMaidAvatar"
 
